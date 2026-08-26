@@ -1,59 +1,39 @@
 # Test Cases — Display stored greeting
 
-Risk: low. One read-only page, no auth, no user input. Cover exact display, reload behavior, loading state, error/no-greeting state, and service contract shape.
+Risk: low. Single read-only page, one stored value, no auth, no writes.
 
-## Scenarios
-
-**Scenario**: Show seed greeting on first open
+## Case 1
+**Scenario**: Show seeded greeting on first open
 **Given**: Stored greeting row contains `Hello Word`
 **When**: Guest opens page
-**Then**: Page shows `Hello Word` as visible greeting text
+**Then**: Page shows `Hello Word` and no extra navigation, forms, admin UI, or other visible content
 **Check**: render_url
-**Trace**: GREETING-001 / AC-1
 
+Trace: GREETING-001 AC-1, SRS 4.1.1-4.1.3, service `GET /v1/greeting` success shape.
+
+## Case 2
 **Scenario**: Show changed greeting after reload
-**Given**: Stored greeting row contains a different value
+**Given**: Stored greeting row contains `Bonjour` instead of seed value
 **When**: Guest reloads page
-**Then**: Page shows the changed value exactly as stored
+**Then**: Page shows `Bonjour` exactly, not `Hello Word`
 **Check**: render_url
-**Trace**: GREETING-001 / AC-2
 
-**Scenario**: Show loading state while greeting read pending
+Trace: GREETING-001 AC-2, SRS 4.1.5.
+
+## Case 3
+**Scenario**: Show loading state while read is pending
 **Given**: Greeting read request is still pending
 **When**: Guest opens page
-**Then**: Page shows centred greeting area with `Hello Word` and loading note below it; no other content is visible
+**Then**: Page shows centred greeting area with `Hello Word` and loading note below it, with no other content visible
 **Check**: render_url
-**Trace**: GREETING-001 / Behaviour 1-2 / AC-3
 
-**Scenario**: Show error state when greeting read fails or returns no usable greeting
+Trace: GREETING-001 AC-3, SRS 4.1.1-4.1.2.
+
+## Case 4
+**Scenario**: Show error state when greeting cannot be read
 **Given**: Greeting read fails or returns no usable greeting
 **When**: Guest opens page
-**Then**: Page shows centred greeting area with `Hello Word` and error note below it; no retry control, empty state, or additional content is shown
+**Then**: Page shows centred greeting area with `Hello Word` and error note below it, with no retry control, empty state, or additional content
 **Check**: render_url
-**Trace**: GREETING-001 / Behaviour 4 / AC-4
 
-**Scenario**: Return current greeting from API
-**Given**: Stored greeting row contains a greeting value
-**When**: Client calls `GET /v1/greeting`
-**Then**: Response is `200 OK` with JSON body containing `greeting.text` equal to stored value and `greeting.updatedAt`
-**Check**: fetch_url
-**Trace**: Services — greeting / GET /v1/greeting success
-
-**Scenario**: Return not_found when greeting row missing
-**Given**: Greeting row `id = 1` does not exist
-**When**: Client calls `GET /v1/greeting`
-**Then**: Response is `404` with error code `not_found`
-**Check**: fetch_url
-**Trace**: Services — greeting / GET /v1/greeting failure
-
-**Scenario**: Return internal_error on greeting read failure
-**Given**: Database or read path fails
-**When**: Client calls `GET /v1/greeting`
-**Then**: Response is `500` with error code `internal_error`
-**Check**: fetch_url
-**Trace**: Services — greeting / GET /v1/greeting failure
-
-## Notes
-
-- No permission cases: module has no sign-in or role-based access.
-- No manual cases: all expectations are observable by HTTP response or rendered page text.
+Trace: GREETING-001 AC-4, SRS 4.1.4, service `GET /v1/greeting` 404/500 failure envelope.
