@@ -6,6 +6,8 @@
 }
 
 .frame {
+  width: 100%;
+  max-width: 960px;
   display: grid;
   place-items: center;
   position: relative;
