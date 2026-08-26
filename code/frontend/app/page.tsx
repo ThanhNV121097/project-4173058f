@@ -2,10 +2,9 @@
 
 import type { GreetingResponse } from '../lib/mock/display-stored-greeting';
 import { greetingResponse } from '../lib/mock/display-stored-greeting';
+import styles from '../components/GreetingFrame.module.css';
 
 type GreetingState = 'loaded' | 'loading' | 'error';
-
-const state: GreetingState = 'loaded';
 
 function GreetingFrame({
   greeting,
@@ -17,11 +16,11 @@ function GreetingFrame({
   label: string;
 }) {
   return (
-    <section className="greeting-shell" aria-label={label}>
-      <div className="greeting-frame">
-        <div className="greeting-label">{label}</div>
-        <h1 className="greeting-text">{greeting}</h1>
-        {note ? <p className="greeting-note">{note}</p> : null}
+    <section className={styles.shell} aria-label={label}>
+      <div className={styles.frame}>
+        <div className={styles.label}>{label}</div>
+        <h1 className={styles.text}>{greeting}</h1>
+        {note ? <p className={styles.note}>{note}</p> : null}
       </div>
     </section>
   );
@@ -30,7 +29,7 @@ function GreetingFrame({
 function selectState(response: GreetingResponse): GreetingState {
   if (response.error) return 'error';
   if (!response.greeting?.text) return 'loading';
-  return state;
+  return 'loaded';
 }
 
 export default function Home() {
