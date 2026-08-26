@@ -41,9 +41,11 @@ where it lives instead. This section prevents the same argument twice.
 
 Behaviour:
 
-1. When the page loads, the app reads the stored greeting through the product API.
-2. When the API returns a greeting value, the page shows that exact text as the only visible content in the centred greeting area.
-3. When the stored greeting value changes in the system of record and the page is reloaded, the new value is shown.
+1. When the page loads, the app starts in a loading state while it reads the stored greeting through the product API.
+2. In loading state, the page shows the centred greeting area with `Hello Word` and a loading note below it; no other content is visible.
+3. When the API returns a greeting value, the page shows that exact text as the only visible content in the centred greeting area.
+4. When the read request fails or returns no usable greeting, the page shows the centred greeting area with `Hello Word` and an error note below it; no retry control, empty state, or additional content is shown.
+5. When the stored greeting value changes in the system of record and the page is reloaded, the new value is shown.
 
 **Acceptance criteria** — each maps one-to-one onto a test case in `docs/greeting/test-cases/display-stored-greeting.md`. Given/When/Then, no compound conditions: one behaviour per criterion.
 
@@ -51,6 +53,8 @@ Behaviour:
 |---|---|---|---|
 | AC-1 | Stored greeting row contains `Hello Word` | Guest opens page | Page shows `Hello Word` |
 | AC-2 | Stored greeting row contains a different value | Guest reloads page | Page shows the changed value |
+| AC-3 | Greeting read is pending | Guest opens page | Page shows loading state with `Hello Word` and loading note |
+| AC-4 | Greeting read fails or returns no usable greeting | Guest opens page | Page shows error state with `Hello Word` and error note |
 
 **Failure, boundary and permission behaviour**
 
@@ -58,7 +62,7 @@ Behaviour:
 |---|---|---|
 | Permission | Any visitor opens page | Not applicable: no sign-in or role-based permission exists in this module |
 | Boundary | Stored greeting length is normal product text length | Accepted and shown exactly as stored, with no truncation defined by this module |
-| Upstream failure | Greeting API or backing store is unavailable | Not applicable: no error or empty state is part of the approved design; the API contract's error envelope is specified in the service contract |
+| Upstream failure | Greeting API or backing store is unavailable | Page shows error state with `Hello Word` and error note; no retry control or alternate content is shown |
 | Conflict | Two actors update greeting at same time | Not applicable: this module only displays the stored value and does not resolve writes |
 
 **Data touched** — the fields this function reads and writes, in product terms.
