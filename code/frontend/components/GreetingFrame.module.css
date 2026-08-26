@@ -1,5 +1,4 @@
 .shell {
-  min-height: 100vh;
   display: grid;
   place-items: center;
   padding: var(--space-6);
@@ -7,8 +6,6 @@
 }
 
 .frame {
-  width: 100%;
-  max-width: 960px;
   display: grid;
   place-items: center;
   position: relative;
@@ -45,4 +42,5 @@
   font-size: var(--text-xs);
   line-height: 1.2;
 }
+
 
