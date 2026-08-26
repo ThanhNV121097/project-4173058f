@@ -1,36 +1,32 @@
 # Story — Display stored greeting
 
 ## User story
-As a Guest, I want to see stored greeting text on page load, so that I can read current product content.
+As a Guest, I want to see the stored greeting text on page load, so that I can read current product content.
 
 ## In scope
-- Load greeting from product API when page opens.
-- Show centred greeting frame in loaded, loading, and error states.
-- Render exact stored greeting text when read succeeds.
-- Render `Hello Word` seed text while loading or when read fails or returns no usable greeting.
-- Reloading page reflects changed stored greeting value from system of record.
+- Show the stored greeting as single centred line on page load.
+- Preserve exact stored text, including seed value `Hello Word`.
+- Reload page after stored value changes and show new value.
+- Match approved design for the loaded/default state only: white background, centred greeting frame, black greeting text.
 
 ## Out of scope
-- Navigation.
-- Forms.
-- Admin UI.
-- Extra styling beyond approved centred greeting layout.
-- Write flows, edit flows, or conflict handling.
-- Storage layout, API contract, and service boundaries; these live in architecture docs.
+- Loading state, loading note, spinner, or retry control.
+- Error state, empty state, or any upstream-failure screen.
+- Navigation, forms, admin UI, and extra styling.
+- Storage layout, API contract, and service boundaries.
 
 ## UI scope
-This story covers `Greeting page` in the approved design, across default, loading, and error states only.
-- Loaded: centred greeting on white background.
-- Loading: centred greeting with loading note.
-- Error: centred greeting with error note.
+- Greeting page, default state only.
+- One centred greeting frame on white background, per approved design system.
+- No separate loading or error screens are part of this story.
 
 ## Acceptance criteria
-- Given stored greeting row contains `Hello Word`, when Guest opens page, then page shows `Hello Word`.
-- Given stored greeting row contains a different value, when Guest reloads page, then page shows changed value.
-- Given greeting read is pending, when Guest opens page, then page shows loading state with `Hello Word` and loading note.
-- Given greeting read fails or returns no usable greeting, when Guest opens page, then page shows error state with `Hello Word` and error note.
+1. Given stored greeting row contains `Hello Word`, when Guest opens page, then page shows `Hello Word`.
+2. Given stored greeting row contains a different value, when Guest reloads page, then page shows the changed value.
+3. Given greeting value exists in stored row, when page loads, then only the centred greeting content is visible.
+4. Given page is rendered, when Guest views it, then no navigation, form, admin, loading, or error content is visible.
 
 ## Dependencies
-- PostgreSQL with stored greeting row.
-- HTTP API service contract for reading current greeting text.
-- Seed value set to exactly `Hello Word`.
+- PostgreSQL stores the greeting row.
+- HTTP API service contract reads current greeting text.
+- Seed value starts as exactly `Hello Word`.
