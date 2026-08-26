@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #e5e5e5;
+  --color-text: #000000;
+  --color-text-muted: #666666;
+  --color-primary: #000000;
+  --color-primary-text: #ffffff;
+  --color-success: #000000;
+  --color-warning: #666666;
+  --color-danger: #000000;
+  --color-focus: #000000;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(2rem, 6vw, 4.5rem);
+
+  --radius-sm: 16px;
+  --radius-md: 20px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --border-width: 1px;
+  --shadow-sm: 0 1px 0 rgba(0,0,0,0.02);
+  --shadow-md: none;
+  --shadow-lg: none;
+  --duration-fast: 0ms;
+  --duration-base: 0ms;
+  --easing: linear;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
