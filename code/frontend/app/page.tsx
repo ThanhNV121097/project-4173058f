@@ -4,8 +4,6 @@ import type { GreetingResponse } from '../lib/mock/display-stored-greeting';
 import { greetingResponse } from '../lib/mock/display-stored-greeting';
 import styles from '../components/GreetingFrame.module.css';
 
-type GreetingState = 'loaded' | 'loading' | 'error';
-
 function GreetingFrame({
   greeting,
   note,
@@ -26,7 +24,7 @@ function GreetingFrame({
   );
 }
 
-function selectState(response: GreetingResponse): GreetingState {
+function selectState(response: GreetingResponse) {
   if (response.error) return 'error';
   if (!response.greeting?.text) return 'error';
   return 'loaded';
@@ -36,9 +34,12 @@ export default function Home() {
   const view = selectState(greetingResponse);
   const greeting = greetingResponse.greeting?.text ?? 'Hello Word';
 
-  if (view === 'error') {
-    return <GreetingFrame greeting="Hello Word" label="Error" note="Could not read greeting row." />;
-  }
-
-  return <GreetingFrame greeting={greeting} label="Loaded" />;
+  return (
+    <main>
+      <GreetingFrame greeting={greeting} label="Loaded" />
+      <GreetingFrame greeting="Hello Word" label="Loading" note="Loading stored greeting…" />
+      <GreetingFrame greeting="Hello Word" label="Error" note="Could not read greeting row." />
+    </main>
+  );
 }
+
