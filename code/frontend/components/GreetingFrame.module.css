@@ -1,0 +1,48 @@
+.shell {
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background: var(--color-bg);
+}
+
+.frame {
+  width: 100%;
+  max-width: 960px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  text-align: center;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  background: var(--color-surface);
+  padding: var(--space-12) var(--space-6);
+}
+
+.label {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.text {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.note {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.2;
+}
+
+
