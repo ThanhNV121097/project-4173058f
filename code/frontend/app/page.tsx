@@ -1,6 +1,5 @@
 "use client";
 
-import type { GreetingResponse } from '../lib/mock/display-stored-greeting';
 import { greetingResponse } from '../lib/mock/display-stored-greeting';
 import styles from '../components/GreetingFrame.module.css';
 
@@ -24,14 +23,7 @@ function GreetingFrame({
   );
 }
 
-function selectState(response: GreetingResponse) {
-  if (response.error) return 'error';
-  if (!response.greeting?.text) return 'error';
-  return 'loaded';
-}
-
 export default function Home() {
-  const view = selectState(greetingResponse);
   const greeting = greetingResponse.greeting?.text ?? 'Hello Word';
 
   return (
@@ -42,4 +34,5 @@ export default function Home() {
     </main>
   );
 }
+
 
