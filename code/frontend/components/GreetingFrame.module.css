@@ -7,8 +7,7 @@
 }
 
 .frame {
-  width: min(100%, 960px);
-  min-height: 220px;
+  width: 100%;
   display: grid;
   place-items: center;
   position: relative;
@@ -17,6 +16,7 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   background: var(--color-surface);
+  padding: var(--space-12) var(--space-6);
 }
 
 .label {
@@ -44,3 +44,4 @@
   font-size: var(--text-xs);
   line-height: 1.2;
 }
+
