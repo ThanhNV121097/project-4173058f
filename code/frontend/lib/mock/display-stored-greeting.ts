@@ -10,9 +10,9 @@ export type GreetingResponse = {
 };
 
 export const greetingResponse: GreetingResponse = {
-  greeting: {
-    text: 'Hello Word',
-    updatedAt: '2025-02-14T00:00:00Z',
+  greeting: null,
+  error: {
+    code: 'not_found',
+    message: 'Could not read greeting.',
   },
-  error: null,
 };
