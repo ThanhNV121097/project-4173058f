@@ -1,66 +1,59 @@
 # Test Cases — Display stored greeting
 
-Risk level: low. Single read-only page, one stored value, one API-backed loading/error path.
-
-## Coverage map
-- GREETING-001 / AC-1: seed value shown on open
-- GREETING-001 / AC-2: changed stored value shown after reload
-- GREETING-001 / AC-3: loading state shows seed text and loading note
-- GREETING-001 / AC-4: read failure or unusable greeting shows seed text and error note
-- Services contract: `GET /v1/greeting` success, `404 not_found`, `500 internal_error`
+Risk: low. One read-only page, no auth, no user input. Cover exact display, reload behavior, loading state, error/no-greeting state, and service contract shape.
 
 ## Scenarios
 
-**Scenario**: Seed greeting shown on first page load
-**Given** stored greeting row contains `Hello Word`
-**When** Guest opens page
-**Then** page shows `Hello Word` as visible greeting text
-Check: render_url
+**Scenario**: Show seed greeting on first open
+**Given**: Stored greeting row contains `Hello Word`
+**When**: Guest opens page
+**Then**: Page shows `Hello Word` as visible greeting text
+**Check**: render_url
+**Trace**: GREETING-001 / AC-1
 
-**Scenario**: Reload shows changed stored greeting
-**Given** stored greeting row contains `Hello Word` and system of record updates it to a different value before reload
-**When** Guest reloads page
-**Then** page shows changed value exactly as stored
-Check: render_url
+**Scenario**: Show changed greeting after reload
+**Given**: Stored greeting row contains a different value
+**When**: Guest reloads page
+**Then**: Page shows the changed value exactly as stored
+**Check**: render_url
+**Trace**: GREETING-001 / AC-2
 
-**Scenario**: Loading state shows seed text and loading note
-**Given** greeting read is pending
-**When** Guest opens page
-**Then** page shows centred greeting area with `Hello Word` and loading note below it, and no other content is visible
-Check: render_url
+**Scenario**: Show loading state while greeting read pending
+**Given**: Greeting read request is still pending
+**When**: Guest opens page
+**Then**: Page shows centred greeting area with `Hello Word` and loading note below it; no other content is visible
+**Check**: render_url
+**Trace**: GREETING-001 / Behaviour 1-2 / AC-3
 
-**Scenario**: Read failure shows seed text and error note
-**Given** greeting read fails or returns no usable greeting
-**When** Guest opens page
-**Then** page shows centred greeting area with `Hello Word` and error note below it, and no retry control, empty state, or additional content is shown
-Check: render_url
+**Scenario**: Show error state when greeting read fails or returns no usable greeting
+**Given**: Greeting read fails or returns no usable greeting
+**When**: Guest opens page
+**Then**: Page shows centred greeting area with `Hello Word` and error note below it; no retry control, empty state, or additional content is shown
+**Check**: render_url
+**Trace**: GREETING-001 / Behaviour 4 / AC-4
 
-**Scenario**: GET /v1/greeting returns stored greeting payload
-**Given** stored greeting row exists
-**When** client sends `GET /v1/greeting`
-**Then** response is `200 OK` with `application/json; charset=utf-8` and body containing `greeting.text` and `greeting.updatedAt`
-Check: fetch_url
+**Scenario**: Return current greeting from API
+**Given**: Stored greeting row contains a greeting value
+**When**: Client calls `GET /v1/greeting`
+**Then**: Response is `200 OK` with JSON body containing `greeting.text` equal to stored value and `greeting.updatedAt`
+**Check**: fetch_url
+**Trace**: Services — greeting / GET /v1/greeting success
 
-**Scenario**: GET /v1/greeting missing row returns not_found
-**Given** greeting row with `id = 1` does not exist
-**When** client sends `GET /v1/greeting`
-**Then** response is `404` with error code `not_found`
-Check: fetch_url
+**Scenario**: Return not_found when greeting row missing
+**Given**: Greeting row `id = 1` does not exist
+**When**: Client calls `GET /v1/greeting`
+**Then**: Response is `404` with error code `not_found`
+**Check**: fetch_url
+**Trace**: Services — greeting / GET /v1/greeting failure
 
-**Scenario**: GET /v1/greeting read failure returns internal_error envelope
-**Given** database or read path fails
-**When** client sends `GET /v1/greeting`
-**Then** response is `500` with error envelope code `internal_error` and message `Could not read greeting.`
-Check: fetch_url
+**Scenario**: Return internal_error on greeting read failure
+**Given**: Database or read path fails
+**When**: Client calls `GET /v1/greeting`
+**Then**: Response is `500` with error code `internal_error`
+**Check**: fetch_url
+**Trace**: Services — greeting / GET /v1/greeting failure
 
-**Scenario**: Guest access has no permission gate
-**Given** any visitor is not signed in
-**When** Guest opens page
-**Then** page is still shown; no sign-in or role-based denial appears
-Check: render_url
+## Notes
 
-**Scenario**: Greeting text is not truncated at normal product length
-**Given** stored greeting row contains normal product text length
-**When** Guest opens page
-**Then** page shows exact stored greeting text with no truncation
-Check: render_url
+- No permission cases: module has no sign-in or role-based access.
+- No manual cases: all expectations are observable by HTTP response or rendered page text.
